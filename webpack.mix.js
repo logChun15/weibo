@@ -12,5 +12,5 @@ const mix = require('laravel-mix');
  */
 
 mix.js('resources/js/app.js', 'public/js')
-    .sass('resources/sass/app.scss', 'public/css')
+    .sass('resources/sass/app.scss', 'public/css').version() /*.version用于解决浏览器缓存问题，让样式实时更新*/
     .sourceMaps();
