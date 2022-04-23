@@ -1,5 +1,5 @@
 <?php
-
+use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\SessionsController;
 use App\Http\Controllers\StaticPagesController;
 use App\Http\Controllers\UsersController;
@@ -25,6 +25,6 @@ Route::get('login',[SessionsController::class,'create'])->name('login');
 Route::post('login',[SessionsController::class,'store'])->name('login');
 Route::delete('logout',[SessionsController::class,'destory'])->name('logout');
 
-Auth::routes();
+// Auth::routes();
 
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+// Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
