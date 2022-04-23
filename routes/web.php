@@ -24,3 +24,7 @@ Route::resource('/users',UsersController::class);
 Route::get('login',[SessionsController::class,'create'])->name('login');
 Route::post('login',[SessionsController::class,'store'])->name('login');
 Route::delete('logout',[SessionsController::class,'destory'])->name('logout');
+
+Auth::routes();
+
+Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
