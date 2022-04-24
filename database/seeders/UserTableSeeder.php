@@ -15,6 +15,7 @@ class UserTableSeeder extends Seeder
         $user->name = 'logchun';
         $user->email = 'logchun@mail.com';
         $user->is_admin = true;
+        $user->password = 'asdfghjkl';
         $user->save();
     }
 }
