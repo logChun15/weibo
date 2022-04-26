@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Status;
 use Illuminate\Support\Facades\Auth;
-use App\Models\User;
 
 
 class StatusesController extends Controller
@@ -14,6 +13,7 @@ class StatusesController extends Controller
     {
         $this->middleware('auth');
     }
+ 
 
     public function store(Request $request)
     {
