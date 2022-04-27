@@ -1,4 +1,6 @@
 <?php
+
+use App\Http\Controllers\FollowersController;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\SessionsController;
 use App\Http\Controllers\StaticPagesController;
@@ -35,3 +37,7 @@ Route::post('password/reset',  [PasswordController::class,'reset'])->name('passw
 Route::resource('statuses', 'App\Http\Controllers\StatusesController', ['only' => ['store', 'destroy']]);
 Route::get('/users/{user}/followings', [UsersController::class,'followings'])->name('users.followings');
 Route::get('/users/{user}/followers', [UsersController::class,'followers'])->name('users.followers');
+// Route::post('/users/followers/{user}', 'App\Http\Controllers\FollowersController@store')->name('followers.store');
+Route::post('/users/followers/{user}', [FollowersController::class,'store'])->name('followers.store');
+// Route::delete('/users/followers/{user}', 'App\Http\Controllers\FollowersController@destroy')->name('followers.destroy');
+Route::delete('/users/followers/{user}', [FollowersController::class,'destroy'])->name('followers.destroy');
