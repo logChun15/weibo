@@ -19,7 +19,7 @@ class FollowersTableSeeder extends Seeder
         $user_id = $user->id;
         //获取去除掉id为1的所有用户id数组
         $followers = $users->slice(1);
-        $follower_ids = $followers->pluck('id')->toArray();
+        $follower_ids = $followers->pluck('id')->toArray(); //pluck方法为给定键获取所有集合值：
         //关注除了1号用户以外的所用用户组
         $user->follow($follower_ids);
         

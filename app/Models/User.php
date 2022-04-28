@@ -10,12 +10,12 @@ use Illuminate\Support\Str;
 
 class User extends Authenticatable
 {
-    use HasFactory, Notifiable;
+    use  HasFactory, Notifiable;
 
     /**
      * The attributes that are mass assignable.
      *
-     * @var array
+     * @var array<int, string>
      */
     protected $fillable = [
         'name',
@@ -24,19 +24,28 @@ class User extends Authenticatable
     ];
 
     /**
-     * The attributes that should be hidden for arrays.
+     * The attributes that should be hidden for serialization.
      *
-     * @var array
+     * @var array<int, string>
      */
     protected $hidden = [
         'password',
         'remember_token',
     ];
 
+    public static function boot()
+    {
+        parent::boot();
+
+        static::creating(function ($user) {
+            $user->activation_token = Str::random(10);
+        });
+    }
+
     /**
-     * The attributes that should be cast to native types.
+     * The attributes that should be cast.
      *
-     * @var array
+     * @var array<string, string>
      */
     protected $casts = [
         'email_verified_at' => 'datetime',
@@ -44,17 +53,8 @@ class User extends Authenticatable
 
     public function gravatar($size = '100')
     {
-    $hash = md5(strtolower(trim($this->attributes['email'])));
-    return "http://www.gravatar.com/avatar/$hash?s=$size";
-    }
-
-    public static function boot()
-    {
-        parent::boot();
-        
-        static::creating(function ($user) {
-            $user->activation_token = Str::random(30);
-        });
+        $hash = md5(strtolower(trim($this->attributes['email'])));
+        return "http://cdn.v2ex.com/gravatar/$hash?s=$size";
     }
 
     public function statuses()
@@ -65,10 +65,10 @@ class User extends Authenticatable
     public function feed()
     {
         $user_ids = $this->followings->pluck('id')->toArray();
-        array_push($user_ids,$this->id);
-        return Status::whereIn('user_id',$user_ids)
-                            ->with('user')
-                            ->orderBy('created_at','desc');
+        array_push($user_ids, $this->id);
+        return Status::whereIn('user_id', $user_ids)
+                              ->with('user')
+                              ->orderBy('created_at', 'desc');
     }
 
     public function followers()
@@ -83,15 +83,15 @@ class User extends Authenticatable
 
     public function follow($user_ids)
     {
-        if(! is_array($user_ids) ) {
-            $user_ids=compact('user_ids');
+        if ( ! is_array($user_ids)) {
+            $user_ids = compact('user_ids');
         }
-        $this->followings()->sync($user_ids,false);
+        $this->followings()->sync($user_ids, false);
     }
 
     public function unfollow($user_ids)
     {
-        if( ! is_array($user_ids)) {
+        if ( ! is_array($user_ids)) {
             $user_ids = compact('user_ids');
         }
         $this->followings()->detach($user_ids);
@@ -99,6 +99,6 @@ class User extends Authenticatable
 
     public function isFollowing($user_id)
     {
-        return $this->followings->contains($user_id); //我们可以通过在用户模型中定义的 isFollowing 方法来判断用户是否已被关注。
+        return $this->followings->contains($user_id);
     }
 }

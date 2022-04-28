@@ -6,4 +6,3 @@
         <button type="submit" class="btn btn-primary mt-3">发布</button>
     </div>
   </form>
-  
